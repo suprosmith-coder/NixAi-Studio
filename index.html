@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
-  <title>NixAi | Studio</title>
+  <title>Cyanix AI · Studio | NixAi</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
-  <!-- ===== FIREBASE SDK ===== -->
+  <!-- ===== FIREBASE SDK (MODULAR) ===== -->
   <script type="importmap">
     {
       "imports": {
@@ -22,7 +22,7 @@
   <style>
     /* ------------------------------
        CYANIX STUDIO –– GLOBAL STYLES
-       (preserved & extended)
+       (preserved & extended with animations)
     ------------------------------ */
     * {
       margin: 0;
@@ -59,101 +59,93 @@
       opacity: 0.3;
     }
 
-    /* Auth & Onboarding (unchanged) */
-    .auth-container, .onboarding-container {
+    /* Auth container – only Google sign-in */
+    .auth-container {
       width: 100%;
-      max-width: 480px;
+      max-width: 440px;
       background: rgba(8, 20, 28, 0.8);
       backdrop-filter: blur(16px);
       border: 1px solid rgba(0, 255, 255, 0.25);
       border-radius: 48px;
-      padding: 40px 32px;
+      padding: 48px 32px;
       box-shadow: 0 30px 50px rgba(0,0,0,0.7), 0 0 0 1px rgba(0,255,255,0.2) inset, 0 0 40px rgba(0,255,255,0.2);
       z-index: 100;
-    }
-
-    .auth-header, .onboarding-header {
       text-align: center;
-      margin-bottom: 32px;
+      animation: fadeInUp 0.8s ease;
     }
 
-    .auth-header i, .onboarding-header i {
-      font-size: 48px;
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .auth-header i {
+      font-size: 64px;
       color: #00ffff;
-      text-shadow: 0 0 20px cyan;
+      text-shadow: 0 0 30px cyan;
       margin-bottom: 16px;
     }
 
-    .auth-header h2, .onboarding-header h2 {
-      font-size: 28px;
-      font-weight: 700;
+    .auth-header h2 {
+      font-size: 32px;
+      font-weight: 800;
       background: linear-gradient(135deg, #b0ffff, #00ffff);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
 
-    .input-group {
-      margin-bottom: 24px;
-    }
-
-    .input-group label {
-      display: block;
-      font-size: 14px;
-      color: #a0dddd;
-      margin-bottom: 8px;
-      letter-spacing: 0.5px;
-    }
-
-    .input-group input, .input-group select {
-      width: 100%;
-      background: rgba(0, 30, 40, 0.7);
-      border: 1.5px solid rgba(0, 255, 255, 0.3);
-      border-radius: 40px;
-      padding: 16px 22px;
-      font-size: 16px;
-      color: #fff;
-      outline: none;
-      transition: 0.2s;
-    }
-
-    .input-group input:focus, .input-group select:focus {
-      border-color: #00ffff;
-      box-shadow: 0 0 0 3px rgba(0,255,255,0.2), 0 0 20px cyan;
-      background: rgba(0, 40, 55, 0.9);
-    }
-
-    .btn-block {
-      width: 100%;
-      padding: 16px;
-      font-size: 18px;
-      margin-top: 16px;
-      border-radius: 40px;
-    }
-
-    .toggle-link {
-      text-align: center;
-      margin-top: 28px;
-      color: #6fafaf;
+    .google-btn {
+      background: rgba(0, 255, 255, 0.1);
+      border: 2px solid cyan;
+      border-radius: 60px;
+      padding: 16px 32px;
+      font-size: 20px;
+      font-weight: 600;
+      color: white;
+      display: inline-flex;
+      align-items: center;
+      gap: 16px;
       cursor: pointer;
-      font-weight: 500;
-      transition: 0.2s;
+      transition: 0.3s;
+      margin: 32px 0 16px;
+      box-shadow: 0 0 20px rgba(0,255,255,0.3);
     }
 
-    .toggle-link:hover {
-      color: cyan;
-      text-shadow: 0 0 8px cyan;
+    .google-btn:hover {
+      background: cyan;
+      color: black;
+      transform: scale(1.05);
+      box-shadow: 0 0 40px cyan;
     }
 
-    /* ---------- DASHBOARD LAYOUT (3 columns) ---------- */
+    /* Onboarding */
+    .onboarding-container {
+      width: 100%;
+      max-width: 520px;
+      background: rgba(8, 20, 28, 0.8);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(0, 255, 255, 0.25);
+      border-radius: 48px;
+      padding: 40px 32px;
+      box-shadow: 0 30px 50px rgba(0,0,0,0.7);
+      animation: fadeInUp 0.8s ease;
+    }
+
+    /* Dashboard */
     .dashboard {
-      display: none; /* shown after auth+onboarding */
+      display: grid;
       width: 100%;
       max-width: 1600px;
       padding: 24px;
       gap: 24px;
       grid-template-columns: 280px 1fr 300px;
       height: 95vh;
-      z-index: 100;
+      animation: fadeIn 0.5s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
     }
 
     .side-col {
@@ -164,11 +156,17 @@
       padding: 28px 16px;
       display: flex;
       flex-direction: column;
-      gap: 24px;
-      box-shadow: 0 20px 35px -10px black, 0 0 0 1px rgba(0,255,255,0.1) inset;
+      gap: 20px;
+      box-shadow: 0 20px 35px -10px black;
+      transition: all 0.3s;
     }
 
-    .left-col .feature-btn {
+    .side-col:hover {
+      border-color: rgba(0,255,255,0.4);
+      box-shadow: 0 0 30px rgba(0,255,255,0.1);
+    }
+
+    .feature-btn {
       background: transparent;
       border: 1px solid rgba(0,255,255,0.2);
       border-radius: 60px;
@@ -185,18 +183,19 @@
       backdrop-filter: blur(5px);
     }
 
-    .left-col .feature-btn i {
+    .feature-btn i {
       font-size: 24px;
       color: #00ffff;
       width: 32px;
-      text-align: center;
+      transition: 0.2s;
     }
 
-    .left-col .feature-btn:hover, .left-col .feature-btn.active {
-      background: rgba(0, 255, 255, 0.1);
+    .feature-btn:hover, .feature-btn.active {
+      background: rgba(0, 255, 255, 0.15);
       border-color: cyan;
       box-shadow: 0 0 20px rgba(0,255,255,0.3);
       color: white;
+      transform: translateX(6px);
     }
 
     .center-col {
@@ -206,7 +205,8 @@
       border-radius: 40px;
       padding: 28px 24px;
       overflow-y: auto;
-      box-shadow: 0 20px 35px -10px black, 0 0 0 1px rgba(0,255,255,0.1) inset;
+      box-shadow: 0 20px 35px -10px black;
+      transition: all 0.3s;
     }
 
     .right-col {
@@ -222,9 +222,15 @@
     }
 
     .user-avatar {
-      font-size: 56px;
+      font-size: 70px;
       color: cyan;
-      margin-bottom: 12px;
+      margin-bottom: 8px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .user-avatar:hover {
+      transform: scale(1.1);
+      text-shadow: 0 0 30px cyan;
     }
 
     .user-name {
@@ -235,7 +241,6 @@
     .user-email {
       font-size: 13px;
       color: #7fc9c9;
-      word-break: break-all;
     }
 
     .signout-btn {
@@ -244,27 +249,24 @@
       color: #ffb0c0;
       border-radius: 40px;
       padding: 12px;
-      margin-top: 24px;
+      margin-top: 20px;
       cursor: pointer;
       transition: 0.2s;
     }
-
     .signout-btn:hover {
       background: #ff4477;
       color: black;
       border-color: #ff4477;
     }
 
-    /* Mode switcher */
     .mode-switch {
       display: flex;
       background: rgba(0,30,40,0.7);
       border-radius: 60px;
       padding: 6px;
       border: 1px solid cyan;
-      margin-bottom: 16px;
+      margin: 16px 0;
     }
-
     .mode-option {
       flex: 1;
       text-align: center;
@@ -274,105 +276,196 @@
       cursor: pointer;
       transition: 0.2s;
     }
-
     .mode-option.active {
       background: cyan;
       color: black;
       box-shadow: 0 0 15px cyan;
     }
 
+    /* Feature panes */
     .feature-pane {
       display: none;
+      animation: slideIn 0.3s ease;
     }
-
     .feature-pane.active-pane {
       display: block;
     }
-
-    /* Preserve original card styles */
-    .card {
-      background: transparent;
-      border: none;
-      padding: 0;
-      box-shadow: none;
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateX(20px); }
+      to { opacity: 1; transform: translateX(0); }
     }
+
     .card-header {
-      margin-bottom: 24px;
-      font-size: 20px;
+      font-size: 24px;
       font-weight: 700;
       color: #b3ffff;
       border-bottom: 1px solid rgba(0,255,255,0.2);
       padding-bottom: 16px;
-    }
-    .entries-container, .task-list {
-      max-height: 400px;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
     }
 
-    /* New feature styles */
-    .preset-grid, .theme-grid {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-      margin: 16px 0;
-    }
-    .preset-item, .theme-item {
-      background: rgba(0,255,255,0.1);
-      border: 1px solid cyan;
-      border-radius: 30px;
-      padding: 10px 20px;
+    .btn {
+      background: transparent;
+      border: 1.5px solid cyan;
+      color: cyan;
+      padding: 12px 26px;
+      border-radius: 40px;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
       cursor: pointer;
+      transition: 0.2s;
+      margin: 8px 0;
     }
-    .slider-group {
-      margin: 20px 0;
+    .btn:hover {
+      background: cyan;
+      color: black;
+      box-shadow: 0 0 25px cyan;
+      transform: translateY(-2px);
     }
-    .slider-label {
+
+    /* Sliders, inputs, etc. */
+    input, textarea, select {
+      background: rgba(0, 30, 40, 0.7);
+      border: 1.5px solid rgba(0,255,255,0.3);
+      border-radius: 40px;
+      padding: 14px 18px;
+      font-size: 16px;
+      color: white;
+      outline: none;
+      width: 100%;
+      margin: 10px 0;
+    }
+    input:focus, textarea:focus, select:focus {
+      border-color: cyan;
+      box-shadow: 0 0 0 3px rgba(0,255,255,0.2);
+    }
+
+    /* Journal entries */
+    .entries-container, .task-list {
+      max-height: 300px;
+      overflow-y: auto;
+    }
+    .entry {
+      background: rgba(0,255,255,0.03);
+      border: 1px solid rgba(0,255,255,0.2);
+      border-radius: 20px;
+      padding: 16px;
       display: flex;
       justify-content: space-between;
+      margin-bottom: 10px;
+      transition: 0.2s;
     }
-    input[type=range] {
-      width: 100%;
-      background: transparent;
+    .entry:hover {
+      background: rgba(0,255,255,0.08);
     }
+    .delete-entry, .delete-task {
+      color: #ff7790;
+      cursor: pointer;
+    }
+
+    /* Grid for presets, etc. */
+    .preset-grid, .theme-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin: 16px 0;
+    }
+    .preset-item, .theme-item, .integration-item {
+      background: rgba(0,255,255,0.1);
+      border: 1px solid cyan;
+      border-radius: 40px;
+      padding: 10px 22px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .preset-item:hover, .theme-item:hover, .integration-item:hover {
+      background: cyan;
+      color: black;
+      transform: scale(1.05);
+    }
+
     .analytics-cards {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 16px;
-      margin-top: 20px;
+      gap: 20px;
     }
     .analytics-card {
       background: rgba(0,30,40,0.7);
-      border-radius: 24px;
+      border-radius: 32px;
       padding: 24px;
       text-align: center;
       border: 1px solid cyan;
     }
-    .api-key-demo {
-      background: #0a1a22;
-      padding: 20px;
-      border-radius: 24px;
-      font-family: monospace;
-      margin: 16px 0;
+
+    /* Personalization */
+    .avatar-options {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      font-size: 48px;
+      margin: 20px 0;
     }
+    .avatar-options i {
+      cursor: pointer;
+      transition: 0.2s;
+      color: cyan;
+    }
+    .avatar-options i:hover {
+      transform: scale(1.2);
+      text-shadow: 0 0 20px cyan;
+    }
+
+    /* Integrations */
+    .integration-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px,1fr));
+      gap: 16px;
+      margin: 20px 0;
+    }
+    .integration-card {
+      background: rgba(0,255,255,0.05);
+      border-radius: 32px;
+      padding: 24px 16px;
+      text-align: center;
+      border: 1px solid cyan;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .integration-card:hover {
+      background: cyan;
+      color: black;
+    }
+    .integration-card i {
+      font-size: 40px;
+    }
+
+    /* Developer panes */
     .node-editor {
       height: 200px;
-      background: #0e202a;
+      background: #0f202b;
       border-radius: 32px;
       border: 2px dashed cyan;
       display: flex;
       align-items: center;
       justify-content: center;
     }
-    .sandbox-controls {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
+    .api-key-demo {
+      background: #0a1a22;
+      padding: 20px;
+      border-radius: 24px;
+      font-family: monospace;
     }
   </style>
 </head>
 <body>
   <div id="appRoot"></div>
 
-  <!-- AgentX Chat (only chat we keep) -->
+  <!-- AgentX Chat -->
   <script defer>
     document.body.appendChild(document.createElement('div')).setAttribute('id','chatBubbleRoot');
     window.agx = '6966b3b9ff2f8569ae243c64eqzJDjZgS87B5TfiPzQ+mw==|tIbVARHbb3vxisAHOtTxmc1gthpRt6O388wxaCp3rAA=';
@@ -384,8 +477,7 @@
     import { initializeApp } from "firebase/app";
     import { getAnalytics } from "firebase/analytics";
     import { 
-      getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, 
-      GoogleAuthProvider, signInWithPopup, onAuthStateChanged 
+      getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged 
     } from "firebase/auth";
     import { getFirestore, doc, setDoc, getDoc } from "firebase/firestore";
 
@@ -408,79 +500,37 @@
     // ==================== APP STATE ====================
     let currentUser = null;
     let onboardingCompleted = false;
-    let activeFeature = 'journal';        // default feature
-    let currentMode = 'creator';          // 'creator' or 'developer'
+    let activeFeature = 'journal';
+    let currentMode = 'creator';
+    let userProfile = { avatar: 'fas fa-circle-user', displayName: '', theme: 'dark' };
 
     // ==================== RENDER FUNCTIONS ====================
     const appRoot = document.getElementById('appRoot');
 
-    function renderAuth() { /* same as before */ 
+    function renderAuth() {
       appRoot.innerHTML = `
         <div class="auth-container">
           <div class="auth-header">
             <i class="fas fa-microchip"></i>
             <h2>Cyanix AI · studio</h2>
-            <p style="color:#9fc; margin-top:8px;">sign in to continue</p>
+            <p style="color:#9fc; margin:16px 0;">sign in with Google to continue</p>
           </div>
-          <div id="authForm">
-            <div class="input-group">
-              <label>Email</label>
-              <input type="email" id="emailInput" placeholder="cyber@creator.space">
-            </div>
-            <div class="input-group">
-              <label>Password</label>
-              <input type="password" id="passwordInput" placeholder="••••••••">
-            </div>
-            <button class="btn btn-block" id="signInBtn"><i class="fas fa-arrow-right-to-bracket"></i> Sign In</button>
-            <button class="btn btn-block" id="googleSignInBtn" style="margin-top:12px; background:rgba(0,255,255,0.1);"><i class="fab fa-google"></i> Continue with Google</button>
-            <div class="toggle-link" id="toggleSignUp">Don't have an account? Sign up</div>
+          <div class="google-btn" id="googleSignInBtn">
+            <i class="fab fa-google"></i> Continue with Google
           </div>
         </div>
       `;
-      document.getElementById('signInBtn').addEventListener('click', () => {
-        const email = document.getElementById('emailInput').value;
-        const pass = document.getElementById('passwordInput').value;
-        signInWithEmailAndPassword(auth, email, pass).catch(alert);
-      });
       document.getElementById('googleSignInBtn').addEventListener('click', () => {
         signInWithPopup(auth, provider).catch(alert);
       });
-      document.getElementById('toggleSignUp').addEventListener('click', () => {
-        appRoot.innerHTML = `
-          <div class="auth-container">
-            <div class="auth-header">
-              <i class="fas fa-microchip"></i>
-              <h2>Create account</h2>
-            </div>
-            <div id="authForm">
-              <div class="input-group">
-                <label>Email</label>
-                <input type="email" id="signupEmail" placeholder="neo@cyanix.ai">
-              </div>
-              <div class="input-group">
-                <label>Password</label>
-                <input type="password" id="signupPass" placeholder="min 6 chars">
-              </div>
-              <button class="btn btn-block" id="signUpBtn"><i class="fas fa-user-plus"></i> Sign Up</button>
-              <div class="toggle-link" id="toggleSignIn">Already have an account? Sign in</div>
-            </div>
-          </div>
-        `;
-        document.getElementById('signUpBtn').addEventListener('click', () => {
-          const email = document.getElementById('signupEmail').value;
-          const pass = document.getElementById('signupPass').value;
-          createUserWithEmailAndPassword(auth, email, pass).catch(alert);
-        });
-        document.getElementById('toggleSignIn').addEventListener('click', renderAuth);
-      });
     }
 
-    function renderOnboarding() { /* same as before */
+    function renderOnboarding() {
       appRoot.innerHTML = `
         <div class="onboarding-container">
           <div class="onboarding-header">
             <i class="fas fa-pen-to-square"></i>
-            <h2>Welcome, trailblazer</h2>
+            <h2>Welcome, ${currentUser?.displayName || 'trailblazer'}</h2>
             <p style="color:#9cf; margin: 8px 0;">help us personalize your journey</p>
           </div>
           <div class="input-group">
@@ -534,7 +584,11 @@
           q3: document.getElementById('q3').value,
           q4: document.getElementById('q4').value,
         };
-        await setDoc(doc(db, 'users', currentUser.uid), { onboarding: answers, email: currentUser.email });
+        await setDoc(doc(db, 'users', currentUser.uid), { 
+          onboarding: answers, 
+          email: currentUser.email,
+          profile: userProfile 
+        });
         onboardingCompleted = true;
         renderDashboard();
       });
@@ -542,7 +596,7 @@
 
     function renderDashboard() {
       appRoot.innerHTML = `
-        <div class="dashboard" style="display: grid;">
+        <div class="dashboard">
           <!-- LEFT COLUMN (features) -->
           <div class="side-col left-col" id="leftCol"></div>
 
@@ -554,11 +608,11 @@
         </div>
       `;
 
-      // Build right column (user + mode switch)
+      // Build right column
       document.getElementById('rightCol').innerHTML = `
         <div class="user-card">
-          <div class="user-avatar"><i class="fas fa-circle-user"></i></div>
-          <div class="user-name">${currentUser?.displayName || 'Cyanix User'}</div>
+          <div class="user-avatar" id="avatarDisplay"><i class="${userProfile.avatar}"></i></div>
+          <div class="user-name">${userProfile.displayName || currentUser?.displayName || 'Cyanix User'}</div>
           <div class="user-email">${currentUser?.email}</div>
           <div class="mode-switch" id="modeSwitch">
             <div class="mode-option ${currentMode === 'creator' ? 'active' : ''}" data-mode="creator">🟢 Creator</div>
@@ -567,29 +621,28 @@
           <button class="signout-btn" id="signOutBtn"><i class="fas fa-sign-out-alt"></i> Sign out</button>
         </div>
         <div style="background: rgba(0,255,255,0.03); border-radius: 40px; padding: 24px;">
-          <h4 style="color: cyan; margin-bottom: 16px;"><i class="fas fa-chart-line"></i> Recent activity</h4>
-          <p style="color:#7bb2b2; font-size: 14px;">• Journal: "Designed glass UI"</p>
-          <p style="color:#7bb2b2; font-size: 14px;">• Task: "Finish hover states"</p>
-          <p style="color:#7bb2b2; font-size: 14px;">• AI App Builder: created assistant</p>
+          <h4 style="color: cyan;"><i class="fas fa-bolt"></i> Quick actions</h4>
+          <p style="color:#7bb2b2; margin-top:12px;">• New journal entry</p>
+          <p style="color:#7bb2b2;">• Create Discord bot</p>
         </div>
       `;
 
-      // Mode switching logic
+      // Mode switching
       document.querySelectorAll('.mode-option').forEach(opt => {
         opt.addEventListener('click', (e) => {
           const mode = e.target.dataset.mode;
           if (mode === currentMode) return;
           currentMode = mode;
-          // Update active class
           document.querySelectorAll('.mode-option').forEach(el => el.classList.remove('active'));
           e.target.classList.add('active');
-          // Rebuild left column for new mode
           buildLeftColumn();
-          // Set default feature for mode
           activeFeature = (mode === 'creator') ? 'journal' : 'modelLab';
           showFeature(activeFeature);
         });
       });
+
+      // Sign out
+      document.getElementById('signOutBtn').addEventListener('click', () => signOut(auth));
 
       // Build left column based on mode
       function buildLeftColumn() {
@@ -599,10 +652,12 @@
             <div class="feature-btn active" data-feature="journal"><i class="fas fa-book-open"></i> Journal</div>
             <div class="feature-btn" data-feature="tasks"><i class="fas fa-list-check"></i> Task Forge</div>
             <div class="feature-btn" data-feature="image"><i class="fas fa-image"></i> Image Editor</div>
-            <div class="feature-btn" data-feature="code"><i class="fas fa-code"></i> Code Builder (Python)</div>
+            <div class="feature-btn" data-feature="code"><i class="fas fa-code"></i> Code Builder</div>
             <div class="feature-btn" data-feature="aiAppBuilder"><i class="fas fa-bolt"></i> AI App Builder</div>
             <div class="feature-btn" data-feature="promptPlayground"><i class="fas fa-pen-to-square"></i> Prompt Playground</div>
-            <div class="feature-btn" data-feature="analytics"><i class="fas fa-chart-simple"></i> Simple Analytics</div>
+            <div class="feature-btn" data-feature="analytics"><i class="fas fa-chart-simple"></i> Analytics</div>
+            <div class="feature-btn" data-feature="personalize"><i class="fas fa-palette"></i> Personalize</div>
+            <div class="feature-btn" data-feature="integrations"><i class="fas fa-plug"></i> Integrations</div>
           `;
         } else {
           leftCol.innerHTML = `
@@ -610,9 +665,9 @@
             <div class="feature-btn" data-feature="apiManager"><i class="fas fa-key"></i> API Manager</div>
             <div class="feature-btn" data-feature="logicBuilder"><i class="fas fa-diagram-project"></i> Logic Builder</div>
             <div class="feature-btn" data-feature="sandbox"><i class="fas fa-vial"></i> Sandbox</div>
+            <div class="feature-btn" data-feature="integrations"><i class="fas fa-plug"></i> Integrations</div>
           `;
         }
-        // Attach feature click handlers
         document.querySelectorAll('.feature-btn').forEach(btn => {
           btn.addEventListener('click', (e) => {
             document.querySelectorAll('.feature-btn').forEach(b => b.classList.remove('active'));
@@ -623,24 +678,15 @@
         });
       }
 
-      // Initial left col build
       buildLeftColumn();
-      // Show default feature
       showFeature(activeFeature);
-
-      // Sign out
-      document.getElementById('signOutBtn').addEventListener('click', () => {
-        signOut(auth);
-      });
     }
 
-    // Show feature in center pane
     function showFeature(feature) {
       const center = document.getElementById('centerPane');
       if (!center) return;
 
       const panes = {
-        // Creator features
         journal: getJournalPane(),
         tasks: getTasksPane(),
         image: getImagePane(),
@@ -648,7 +694,8 @@
         aiAppBuilder: getAiAppBuilderPane(),
         promptPlayground: getPromptPlaygroundPane(),
         analytics: getAnalyticsPane(),
-        // Developer features
+        personalize: getPersonalizePane(),
+        integrations: getIntegrationsPane(),
         modelLab: getModelLabPane(),
         apiManager: getApiManagerPane(),
         logicBuilder: getLogicBuilderPane(),
@@ -664,13 +711,15 @@
       if (feature === 'aiAppBuilder') initAiAppBuilder();
       if (feature === 'promptPlayground') initPromptPlayground();
       if (feature === 'analytics') initAnalytics();
+      if (feature === 'personalize') initPersonalize();
+      if (feature === 'integrations') initIntegrations();
       if (feature === 'modelLab') initModelLab();
       if (feature === 'apiManager') initApiManager();
       if (feature === 'logicBuilder') initLogicBuilder();
       if (feature === 'sandbox') initSandbox();
     }
 
-    // ---------- Feature pane HTML generators ----------
+    // ---------- Feature pane HTML generators (with interactive elements) ----------
     function getJournalPane() {
       return `
         <div class="feature-pane active-pane" id="journalPane">
@@ -698,13 +747,13 @@
         <div class="feature-pane" id="imagePane">
           <div class="card-header"><i class="fas fa-image"></i> Image Editor</div>
           <div class="image-editor">
-            <div class="image-canvas" id="imageCanvas">
-              <i class="fas fa-cloud-upload-alt" style="font-size: 40px;"></i> <span>drop or click to upload</span>
+            <div class="image-canvas" id="imageCanvas" style="height:200px; background:#11212e; border-radius:32px; display:flex; align-items:center; justify-content:center;">
+              <i class="fas fa-cloud-upload-alt" style="font-size:40px;"></i> <span>click to simulate upload</span>
             </div>
-            <div class="img-controls">
-              <button id="grayscaleBtn"><i class="fas fa-droplet"></i> Grayscale</button>
-              <button id="brightnessBtn"><i class="fas fa-sun"></i> Brightness +</button>
-              <button id="resetImgBtn"><i class="fas fa-undo"></i> Reset</button>
+            <div class="img-controls" style="margin-top:16px;">
+              <button class="btn" id="grayscaleBtn"><i class="fas fa-droplet"></i> Grayscale</button>
+              <button class="btn" id="brightnessBtn"><i class="fas fa-sun"></i> Brightness +</button>
+              <button class="btn" id="resetImgBtn"><i class="fas fa-undo"></i> Reset</button>
             </div>
           </div>
         </div>
@@ -715,9 +764,9 @@
       return `
         <div class="feature-pane" id="codePane">
           <div class="card-header"><i class="fas fa-code"></i> Python Playground</div>
-          <textarea id="codeInput" class="code-editor" placeholder="# write your python code here...\nprint('hello cyanix')"></textarea>
+          <textarea id="codeInput" style="height:150px; font-family:monospace;" placeholder="# write your python code here...\nprint('hello cyanix')"></textarea>
           <button class="btn" id="runCodeBtn"><i class="fas fa-play"></i> Run</button>
-          <div id="codeOutput" class="code-output">› output will appear here</div>
+          <div id="codeOutput" style="background:#0a1a22; border-radius:24px; padding:20px; margin-top:16px;">› output will appear here</div>
         </div>
       `;
     }
@@ -725,38 +774,32 @@
     function getAiAppBuilderPane() {
       return `
         <div class="feature-pane" id="aiAppBuilderPane">
-          <div class="card-header"><i class="fas fa-bolt"></i> AI App Builder (Visual)</div>
-          <div style="margin:20px 0">
-            <div style="display:flex; gap:20px; flex-wrap:wrap;">
-              <div style="flex:1; min-width:200px;">
-                <label>Personality preset</label>
-                <div class="preset-grid">
-                  <div class="preset-item">Friendly</div>
-                  <div class="preset-item">Professional</div>
-                  <div class="preset-item">Sarcastic</div>
-                  <div class="preset-item">Coach</div>
-                </div>
-              </div>
-              <div style="flex:1;">
-                <label>Memory</label>
-                <div style="display:flex; gap:10px; margin-top:10px;">
-                  <button class="btn" id="shortMem">Short-term</button>
-                  <button class="btn" id="longMem">Long-term</button>
-                </div>
-              </div>
+          <div class="card-header"><i class="fas fa-bolt"></i> AI App Builder</div>
+          <div>
+            <label>Personality preset</label>
+            <div class="preset-grid">
+              <div class="preset-item" data-preset="friendly">Friendly</div>
+              <div class="preset-item" data-preset="professional">Professional</div>
+              <div class="preset-item" data-preset="sarcastic">Sarcastic</div>
             </div>
-            <div style="margin:20px 0;">
-              <label>Theme</label>
-              <div class="theme-grid">
-                <div class="theme-item">Dark</div>
-                <div class="theme-item">Light</div>
-                <div class="theme-item">Cyan</div>
-                <div class="theme-item">Neon</div>
-              </div>
-            </div>
-            <button class="btn" id="deployBtn"><i class="fas fa-rocket"></i> Deploy instantly</button>
-            <p style="color:#3eaeae; margin-top:16px;">Deployed: MyAssistant v1 (simulated)</p>
           </div>
+          <div>
+            <label>Memory</label>
+            <div style="display:flex; gap:10px;">
+              <button class="btn" id="shortMem">Short-term</button>
+              <button class="btn" id="longMem">Long-term</button>
+            </div>
+          </div>
+          <div>
+            <label>Theme</label>
+            <div class="theme-grid">
+              <div class="theme-item" data-theme="dark">Dark</div>
+              <div class="theme-item" data-theme="light">Light</div>
+              <div class="theme-item" data-theme="cyan">Cyan</div>
+            </div>
+          </div>
+          <button class="btn" id="deployBtn"><i class="fas fa-rocket"></i> Deploy</button>
+          <p id="deployStatus" style="color:#3eaeae; margin-top:16px;"></p>
         </div>
       `;
     }
@@ -764,7 +807,7 @@
     function getPromptPlaygroundPane() {
       return `
         <div class="feature-pane" id="promptPlaygroundPane">
-          <div class="card-header"><i class="fas fa-pen-to-square"></i> Prompt Playground Lite</div>
+          <div class="card-header"><i class="fas fa-pen-to-square"></i> Prompt Playground</div>
           <textarea id="promptInput" placeholder="Enter your prompt..." style="height:120px;"></textarea>
           <div class="slider-group">
             <div class="slider-label"><span>Creativity</span><span id="creativityVal">0.7</span></div>
@@ -774,16 +817,13 @@
             <div class="slider-label"><span>Response length</span><span id="lengthVal">150</span></div>
             <input type="range" id="lengthSlider" min="50" max="500" step="10" value="150">
           </div>
-          <div class="input-group">
-            <label>Tone</label>
-            <select id="toneSelect">
-              <option>Neutral</option>
-              <option>Formal</option>
-              <option>Casual</option>
-              <option>Enthusiastic</option>
-            </select>
-          </div>
+          <select id="toneSelect">
+            <option>Neutral</option>
+            <option>Formal</option>
+            <option>Casual</option>
+          </select>
           <button class="btn" id="saveTemplateBtn"><i class="fas fa-save"></i> Save as template</button>
+          <div id="templateMessage" style="margin-top:16px;"></div>
         </div>
       `;
     }
@@ -793,53 +833,92 @@
         <div class="feature-pane" id="analyticsPane">
           <div class="card-header"><i class="fas fa-chart-simple"></i> Simple Analytics</div>
           <div class="analytics-cards">
-            <div class="analytics-card">
-              <i class="fas fa-comments" style="font-size:32px;"></i>
-              <h3>1.2k</h3>
-              <p>Conversations</p>
-            </div>
-            <div class="analytics-card">
-              <i class="fas fa-user-plus"></i>
-              <h3>342</h3>
-              <p>User growth</p>
-            </div>
-            <div class="analytics-card">
-              <i class="fas fa-cloud-arrow-up"></i>
-              <h3>8.4k</h3>
-              <p>API usage</p>
-            </div>
-            <div class="analytics-card">
-              <i class="fas fa-clock"></i>
-              <h3>4.2m</h3>
-              <p>Engagement time</p>
-            </div>
+            <div class="analytics-card"><i class="fas fa-comments"></i><h3>1.2k</h3><p>Conversations</p></div>
+            <div class="analytics-card"><i class="fas fa-user-plus"></i><h3>342</h3><p>User growth</p></div>
+            <div class="analytics-card"><i class="fas fa-cloud-arrow-up"></i><h3>8.4k</h3><p>API usage</p></div>
+            <div class="analytics-card"><i class="fas fa-clock"></i><h3>4.2m</h3><p>Engagement time</p></div>
           </div>
         </div>
       `;
     }
 
-    // Developer panes
+    function getPersonalizePane() {
+      return `
+        <div class="feature-pane" id="personalizePane">
+          <div class="card-header"><i class="fas fa-palette"></i> Personalize</div>
+          <div style="text-align:center;">
+            <div class="user-avatar" style="font-size:100px;"><i class="${userProfile.avatar}"></i></div>
+            <div class="avatar-options">
+              <i class="fas fa-circle-user" data-avatar="fas fa-circle-user"></i>
+              <i class="fas fa-robot" data-avatar="fas fa-robot"></i>
+              <i class="fas fa-cat" data-avatar="fas fa-cat"></i>
+              <i class="fas fa-dragon" data-avatar="fas fa-dragon"></i>
+            </div>
+          </div>
+          <div class="input-group">
+            <label>Display name</label>
+            <input type="text" id="displayNameInput" value="${userProfile.displayName || ''}">
+          </div>
+          <div class="input-group">
+            <label>Theme</label>
+            <select id="themeSelect">
+              <option value="dark" ${userProfile.theme === 'dark' ? 'selected' : ''}>Dark</option>
+              <option value="light" ${userProfile.theme === 'light' ? 'selected' : ''}>Light</option>
+              <option value="cyan" ${userProfile.theme === 'cyan' ? 'selected' : ''}>Cyan</option>
+            </select>
+          </div>
+          <button class="btn" id="saveProfileBtn"><i class="fas fa-save"></i> Save Changes</button>
+        </div>
+      `;
+    }
+
+    function getIntegrationsPane() {
+      return `
+        <div class="feature-pane" id="integrationsPane">
+          <div class="card-header"><i class="fas fa-plug"></i> Integrations</div>
+          <div class="integration-grid">
+            <div class="integration-card" data-integration="discord">
+              <i class="fab fa-discord"></i>
+              <h4>Discord Bot</h4>
+              <p>Create & deploy</p>
+            </div>
+            <div class="integration-card" data-integration="slack">
+              <i class="fab fa-slack"></i>
+              <h4>Slack App</h4>
+              <p>Configure</p>
+            </div>
+            <div class="integration-card" data-integration="twitter">
+              <i class="fab fa-twitter"></i>
+              <h4>Twitter Bot</h4>
+              <p>Auto‑post</p>
+            </div>
+            <div class="integration-card" data-integration="github">
+              <i class="fab fa-github"></i>
+              <h4>GitHub Action</h4>
+              <p>CI/CD</p>
+            </div>
+          </div>
+          <div id="integrationDetails" style="margin-top:24px;"></div>
+        </div>
+      `;
+    }
+
     function getModelLabPane() {
       return `
         <div class="feature-pane" id="modelLabPane">
           <div class="card-header"><i class="fas fa-flask"></i> Model Lab</div>
-          <div style="margin-bottom:16px;">
-            <button class="btn"><i class="fas fa-upload"></i> Upload dataset</button>
-            <button class="btn"><i class="fas fa-eye"></i> Tokenizer viewer</button>
-          </div>
-          <div style="background:#0f202b; border-radius:24px; padding:20px;">
+          <button class="btn" id="uploadDatasetBtn"><i class="fas fa-upload"></i> Upload dataset</button>
+          <button class="btn" id="viewTokenizerBtn"><i class="fas fa-eye"></i> Tokenizer viewer</button>
+          <div style="background:#0f202b; border-radius:24px; padding:20px; margin:16px 0;">
             <p>Loss graph (demo)</p>
-            <div style="height:100px; background:#1a333e; border-radius:16px; display:flex; align-items:flex-end; padding:8px;">
+            <div style="height:80px; display:flex; align-items:flex-end; gap:4px;">
               <div style="width:20%; background:cyan; height:40%;"></div>
               <div style="width:20%; background:cyan; height:70%;"></div>
               <div style="width:20%; background:cyan; height:30%;"></div>
               <div style="width:20%; background:cyan; height:90%;"></div>
-              <div style="width:20%; background:cyan; height:50%;"></div>
             </div>
           </div>
-          <div style="margin-top:16px;">
-            <label>Version control: v2.3.1</label>
-          </div>
+          <div>Version: v2.3.1</div>
         </div>
       `;
     }
@@ -847,18 +926,12 @@
     function getApiManagerPane() {
       return `
         <div class="feature-pane" id="apiManagerPane">
-          <div class="card-header"><i class="fas fa-key"></i> API & Endpoint Manager</div>
-          <div class="api-key-demo">
-            <code>api_live_cynx_xxxxxxxxxxxx</code>
-          </div>
-          <button class="btn"><i class="fas fa-rotate"></i> Generate new key</button>
-          <div style="margin-top:20px;">
-            <label>Rate limit: 1000/min</label>
-            <input type="range" min="100" max="5000" value="1000">
-          </div>
-          <div style="margin-top:20px;">
-            <button class="btn"><i class="fas fa-eye"></i> Logs</button>
-            <button class="btn"><i class="fas fa-link"></i> Webhooks</button>
+          <div class="card-header"><i class="fas fa-key"></i> API Manager</div>
+          <div class="api-key-demo">api_live_cynx_xxxxxxxxxxxx</div>
+          <button class="btn" id="generateKeyBtn"><i class="fas fa-rotate"></i> Generate new key</button>
+          <div style="margin-top:16px;">
+            <label>Rate limit: <span id="rateValue">1000</span>/min</label>
+            <input type="range" id="rateSlider" min="100" max="5000" value="1000">
           </div>
         </div>
       `;
@@ -867,14 +940,11 @@
     function getLogicBuilderPane() {
       return `
         <div class="feature-pane" id="logicBuilderPane">
-          <div class="card-header"><i class="fas fa-diagram-project"></i> Logic & Workflow Builder</div>
+          <div class="card-header"><i class="fas fa-diagram-project"></i> Logic Builder</div>
           <div class="node-editor">
-            <i class="fas fa-arrows-up-down-left-right" style="font-size:32px; color:cyan;"></i>
-            <span style="margin-left:16px;">Drag & drop nodes (demo)</span>
+            <i class="fas fa-arrows-up-down-left-right" style="font-size:32px;"></i> Drag & drop nodes
           </div>
-          <div style="margin-top:20px;">
-            <button class="btn"><i class="fas fa-database"></i> Connect Firebase</button>
-          </div>
+          <button class="btn" id="connectFirebaseBtn"><i class="fas fa-database"></i> Connect Firebase</button>
         </div>
       `;
     }
@@ -882,111 +952,98 @@
     function getSandboxPane() {
       return `
         <div class="feature-pane" id="sandboxPane">
-          <div class="card-header"><i class="fas fa-vial"></i> Sandbox & Testing</div>
-          <div class="sandbox-controls">
-            <button class="btn"><i class="fas fa-users"></i> Simulate 100 users</button>
-            <button class="btn"><i class="fas fa-chart-line"></i> Load test</button>
+          <div class="card-header"><i class="fas fa-vial"></i> Sandbox</div>
+          <div style="display:flex; gap:10px;">
+            <button class="btn" id="simulateUsersBtn"><i class="fas fa-users"></i> Simulate 100 users</button>
+            <button class="btn" id="loadTestBtn"><i class="fas fa-chart-line"></i> Load test</button>
           </div>
-          <div style="margin-top:20px; background:#0f202b; border-radius:24px; padding:16px;">
-            <p>Debug console</p>
-            <pre style="color:#7fd1d1;">> consistency check passed</pre>
+          <div style="background:#0f202b; border-radius:24px; padding:16px; margin-top:16px;">
+            <pre id="debugConsole">> ready</pre>
           </div>
         </div>
       `;
     }
 
-    // ---------- Feature initializers (original + new) ----------
+    // ---------- Feature initializers (fully interactive) ----------
     function initJournal() {
-      const journalInput = document.getElementById('journalInput');
-      const addEntryBtn = document.getElementById('addEntryBtn');
-      const journalContainer = document.getElementById('journalEntries');
-      if (!journalContainer) return;
-
-      function addJournalEntry(text) {
+      const input = document.getElementById('journalInput');
+      const addBtn = document.getElementById('addEntryBtn');
+      const container = document.getElementById('journalEntries');
+      if (!container) return;
+      const addEntry = (text) => {
         if (!text.trim()) return;
-        const entryDiv = document.createElement('div');
-        entryDiv.className = 'entry';
-        entryDiv.innerHTML = `
-          <span class="entry-text">${text}</span>
-          <span class="entry-time">${new Date().toLocaleTimeString([], { hour:'2-digit', minute:'2-digit' })}</span>
-          <i class="fas fa-trash delete-entry"></i>
-        `;
-        journalContainer.appendChild(entryDiv);
-      }
-      journalContainer.innerHTML = '';
-      addJournalEntry('Designed Cyanix glass UI – it glows!');
-      addJournalEntry('AI chat responding with fluid animations.');
-
-      addEntryBtn?.addEventListener('click', () => {
-        addJournalEntry(journalInput.value);
-        journalInput.value = '';
-      });
-      journalContainer.addEventListener('click', (e) => {
-        if (e.target.classList.contains('delete-entry')) {
-          e.target.closest('.entry').remove();
-        }
+        const div = document.createElement('div');
+        div.className = 'entry';
+        div.innerHTML = `<span class="entry-text">${text}</span>
+          <span class="entry-time">${new Date().toLocaleTimeString()}</span>
+          <i class="fas fa-trash delete-entry"></i>`;
+        container.appendChild(div);
+      };
+      container.innerHTML = '';
+      addEntry('Designed Cyanix glass UI');
+      addEntry('AI chat responding fluidly');
+      addBtn?.addEventListener('click', () => { addEntry(input.value); input.value = ''; });
+      container.addEventListener('click', (e) => {
+        if (e.target.classList.contains('delete-entry')) e.target.closest('.entry').remove();
       });
     }
 
     function initTasks() {
-      const taskInput = document.getElementById('taskInput');
-      const addTaskBtn = document.getElementById('addTaskBtn');
-      const taskList = document.getElementById('taskList');
-      if (!taskList) return;
-      function addTask(text) {
+      const input = document.getElementById('taskInput');
+      const addBtn = document.getElementById('addTaskBtn');
+      const list = document.getElementById('taskList');
+      if (!list) return;
+      const addTask = (text) => {
         if (!text.trim()) return;
         const li = document.createElement('li');
-        li.innerHTML = `
-          <input type="checkbox">
-          <span class="task-text">${text}</span>
-          <i class="fas fa-trash delete-task"></i>
-        `;
-        taskList.appendChild(li);
-      }
-      taskList.innerHTML = '';
+        li.innerHTML = `<input type="checkbox"><span class="task-text">${text}</span><i class="fas fa-trash delete-task"></i>`;
+        list.appendChild(li);
+      };
+      list.innerHTML = '';
       addTask('Implement journal delete');
       addTask('Finish cyan neon hover states');
-      addTaskBtn?.addEventListener('click', () => {
-        addTask(taskInput.value);
-        taskInput.value = '';
+      addBtn?.addEventListener('click', () => { addTask(input.value); input.value = ''; });
+      list.addEventListener('click', (e) => {
+        if (e.target.classList.contains('delete-task')) e.target.closest('li').remove();
       });
-      taskList.addEventListener('click', (e) => {
-        if (e.target.classList.contains('delete-task')) {
-          e.target.closest('li').remove();
-        }
-      });
-      taskList.addEventListener('change', (e) => {
-        if (e.target.type === 'checkbox') {
-          e.target.nextElementSibling.classList.toggle('completed', e.target.checked);
-        }
+      list.addEventListener('change', (e) => {
+        if (e.target.type === 'checkbox') e.target.nextElementSibling.classList.toggle('completed', e.target.checked);
       });
     }
 
     function initImageEditor() {
-      const canvasDiv = document.getElementById('imageCanvas');
-      if (!canvasDiv) return;
-      canvasDiv.style.background = '#11212e';
-      canvasDiv.innerHTML = '<i class="fas fa-image" style="font-size:40px;"></i> <span>sample image (simulated)</span>';
-      document.getElementById('grayscaleBtn')?.addEventListener('click', () => canvasDiv.style.filter = 'grayscale(1)');
-      document.getElementById('brightnessBtn')?.addEventListener('click', () => canvasDiv.style.filter = 'brightness(1.5)');
-      document.getElementById('resetImgBtn')?.addEventListener('click', () => canvasDiv.style.filter = 'none');
+      const canvas = document.getElementById('imageCanvas');
+      if (!canvas) return;
+      canvas.addEventListener('click', () => {
+        canvas.style.background = '#1a3a4a';
+        canvas.innerHTML = '<i class="fas fa-check" style="color:cyan;"></i> Image loaded (simulated)';
+      });
+      document.getElementById('grayscaleBtn')?.addEventListener('click', () => canvas.style.filter = 'grayscale(1)');
+      document.getElementById('brightnessBtn')?.addEventListener('click', () => canvas.style.filter = 'brightness(1.5)');
+      document.getElementById('resetImgBtn')?.addEventListener('click', () => canvas.style.filter = 'none');
     }
 
     function initCodeBuilder() {
       const runBtn = document.getElementById('runCodeBtn');
       const codeInput = document.getElementById('codeInput');
-      const outputDiv = document.getElementById('codeOutput');
-      if (!outputDiv) return;
+      const output = document.getElementById('codeOutput');
       runBtn?.addEventListener('click', () => {
-        const code = codeInput.value;
-        outputDiv.innerText = `>>> ${code}\n[simulated output] Hello, Cyanix coder!`;
+        output.innerText = `>>> ${codeInput.value}\n[simulated] Hello, Cyanix coder!`;
       });
     }
 
     function initAiAppBuilder() {
-      document.getElementById('shortMem')?.addEventListener('click', () => alert('Short-term memory enabled (demo)'));
-      document.getElementById('longMem')?.addEventListener('click', () => alert('Long-term memory enabled (demo)'));
-      document.getElementById('deployBtn')?.addEventListener('click', () => alert('App deployed! (simulated)'));
+      document.querySelectorAll('.preset-item').forEach(el => {
+        el.addEventListener('click', () => alert(`Preset: ${el.dataset.preset} (demo)`));
+      });
+      document.getElementById('shortMem')?.addEventListener('click', () => alert('Short-term memory enabled'));
+      document.getElementById('longMem')?.addEventListener('click', () => alert('Long-term memory enabled'));
+      document.querySelectorAll('.theme-item').forEach(el => {
+        el.addEventListener('click', () => alert(`Theme: ${el.dataset.theme}`));
+      });
+      document.getElementById('deployBtn')?.addEventListener('click', () => {
+        document.getElementById('deployStatus').innerText = '✅ App deployed instantly!';
+      });
     }
 
     function initPromptPlayground() {
@@ -996,14 +1053,68 @@
       const lengthVal = document.getElementById('lengthVal');
       creativity?.addEventListener('input', () => creativityVal.innerText = creativity.value);
       length?.addEventListener('input', () => lengthVal.innerText = length.value);
-      document.getElementById('saveTemplateBtn')?.addEventListener('click', () => alert('Template saved (demo)'));
+      document.getElementById('saveTemplateBtn')?.addEventListener('click', () => {
+        document.getElementById('templateMessage').innerHTML = '✅ Template saved!';
+      });
     }
 
     function initAnalytics() { /* static */ }
-    function initModelLab() { /* static */ }
-    function initApiManager() { /* static */ }
-    function initLogicBuilder() { /* static */ }
-    function initSandbox() { /* static */ }
+
+    function initPersonalize() {
+      document.querySelectorAll('.avatar-options i').forEach(el => {
+        el.addEventListener('click', () => {
+          userProfile.avatar = el.dataset.avatar;
+          document.querySelector('#personalizePane .user-avatar i').className = userProfile.avatar;
+          document.getElementById('avatarDisplay').innerHTML = `<i class="${userProfile.avatar}"></i>`;
+        });
+      });
+      document.getElementById('saveProfileBtn')?.addEventListener('click', () => {
+        userProfile.displayName = document.getElementById('displayNameInput').value;
+        userProfile.theme = document.getElementById('themeSelect').value;
+        alert('Profile updated (demo)');
+      });
+    }
+
+    function initIntegrations() {
+      document.querySelectorAll('.integration-card').forEach(card => {
+        card.addEventListener('click', () => {
+          const type = card.dataset.integration;
+          let msg = '';
+          if (type === 'discord') msg = '🎮 Discord bot creator: choose a name for your bot.';
+          else if (type === 'slack') msg = '💬 Slack app configuration wizard (demo).';
+          else if (type === 'twitter') msg = '🐦 Twitter bot scheduler (demo).';
+          else if (type === 'github') msg = '🐙 GitHub Action template generated.';
+          document.getElementById('integrationDetails').innerHTML = `<div class="api-key-demo">${msg}</div>`;
+        });
+      });
+    }
+
+    function initModelLab() {
+      document.getElementById('uploadDatasetBtn')?.addEventListener('click', () => alert('Dataset upload UI (demo)'));
+      document.getElementById('viewTokenizerBtn')?.addEventListener('click', () => alert('Tokenizer viewer: <PAD>, <UNK>, ...'));
+    }
+
+    function initApiManager() {
+      document.getElementById('generateKeyBtn')?.addEventListener('click', () => {
+        document.querySelector('.api-key-demo').innerText = 'api_live_newkey_' + Math.random().toString(36).substring(2);
+      });
+      const slider = document.getElementById('rateSlider');
+      const rateVal = document.getElementById('rateValue');
+      slider?.addEventListener('input', () => rateVal.innerText = slider.value);
+    }
+
+    function initLogicBuilder() {
+      document.getElementById('connectFirebaseBtn')?.addEventListener('click', () => alert('Firebase connected (demo)'));
+    }
+
+    function initSandbox() {
+      document.getElementById('simulateUsersBtn')?.addEventListener('click', () => {
+        document.getElementById('debugConsole').innerText = '> Simulating 100 users... done.';
+      });
+      document.getElementById('loadTestBtn')?.addEventListener('click', () => {
+        document.getElementById('debugConsole').innerText = '> Load test: 950 req/sec, 0 errors.';
+      });
+    }
 
     // ==================== AUTH STATE OBSERVER ====================
     onAuthStateChanged(auth, async (user) => {
@@ -1013,6 +1124,7 @@
         const docSnap = await getDoc(docRef);
         if (docSnap.exists() && docSnap.data().onboarding) {
           onboardingCompleted = true;
+          userProfile = { ...userProfile, ...docSnap.data().profile };
           renderDashboard();
         } else {
           renderOnboarding();
@@ -1022,7 +1134,7 @@
       }
     });
 
-    renderAuth(); // initial
+    renderAuth(); // start
   </script>
 </body>
-  </html>
+</html>
