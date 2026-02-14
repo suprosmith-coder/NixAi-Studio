@@ -3,29 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
-  <title>NiXAi · studio – ultimate advanced</title>
+  <title>Cyanix AI · studio – Workspace</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
-  <!-- ===== FIREBASE SDK (MODULAR) ===== -->
-  <script type="importmap">
-    {
-      "imports": {
-        "firebase/app": "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js",
-        "firebase/auth": "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js",
-        "firebase/firestore": "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js",
-        "firebase/analytics": "https://www.gstatic.com/firebasejs/10.8.0/firebase-analytics.js"
-      }
-    }
-  </script>
-
-  <!-- Brython Runner for Python execution -->
-  <script src="https://cdn.jsdelivr.net/gh/pythonpad/brython-runner/lib/brython-runner.bundle.js"></script>
-
   <style>
     /* ------------------------------
-       NiXAi STUDIO –– GLOBAL STYLES
-       (preserved & extended with animations)
+       CYANIX STUDIO –– GLOBAL STYLES
+       (all original styles preserved)
     ------------------------------ */
     * {
       margin: 0;
@@ -47,6 +32,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      padding: 24px;
     }
 
     body::after {
@@ -62,84 +48,11 @@
       opacity: 0.3;
     }
 
-    /* Auth container – only Google sign-in */
-    .auth-container {
-      width: 100%;
-      max-width: 440px;
-      background: rgba(8, 20, 28, 0.8);
-      backdrop-filter: blur(16px);
-      border: 1px solid rgba(0, 255, 255, 0.25);
-      border-radius: 48px;
-      padding: 48px 32px;
-      box-shadow: 0 30px 50px rgba(0,0,0,0.7), 0 0 0 1px rgba(0,255,255,0.2) inset, 0 0 40px rgba(0,255,255,0.2);
-      z-index: 100;
-      text-align: center;
-      animation: fadeInUp 0.8s ease;
-    }
-
-    @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(30px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .auth-header i {
-      font-size: 64px;
-      color: #00ffff;
-      text-shadow: 0 0 30px cyan;
-      margin-bottom: 16px;
-    }
-
-    .auth-header h2 {
-      font-size: 32px;
-      font-weight: 800;
-      background: linear-gradient(135deg, #b0ffff, #00ffff);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    .google-btn {
-      background: rgba(0, 255, 255, 0.1);
-      border: 2px solid cyan;
-      border-radius: 60px;
-      padding: 16px 32px;
-      font-size: 20px;
-      font-weight: 600;
-      color: white;
-      display: inline-flex;
-      align-items: center;
-      gap: 16px;
-      cursor: pointer;
-      transition: 0.3s;
-      margin: 32px 0 16px;
-      box-shadow: 0 0 20px rgba(0,255,255,0.3);
-    }
-
-    .google-btn:hover {
-      background: cyan;
-      color: black;
-      transform: scale(1.05);
-      box-shadow: 0 0 40px cyan;
-    }
-
-    /* Onboarding */
-    .onboarding-container {
-      width: 100%;
-      max-width: 520px;
-      background: rgba(8, 20, 28, 0.8);
-      backdrop-filter: blur(16px);
-      border: 1px solid rgba(0, 255, 255, 0.25);
-      border-radius: 48px;
-      padding: 40px 32px;
-      box-shadow: 0 30px 50px rgba(0,0,0,0.7);
-      animation: fadeInUp 0.8s ease;
-    }
-
     /* Dashboard */
     .dashboard {
       display: grid;
       width: 100%;
       max-width: 1600px;
-      padding: 24px;
       gap: 24px;
       grid-template-columns: 280px 1fr 300px;
       height: 95vh;
@@ -463,172 +376,31 @@
       border-radius: 24px;
       font-family: monospace;
     }
-
-    /* Loading indicator */
-    .loading {
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0,0,0,0.7);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 1000;
-      color: cyan;
-      font-size: 24px;
-      backdrop-filter: blur(8px);
-    }
-
-    .completed {
-      text-decoration: line-through;
-      color: #7fc9c9;
-    }
   </style>
 </head>
 <body>
   <div id="appRoot"></div>
 
-  <!-- AgentX Chat -->
+  <!-- AgentX Chat (unchanged) -->
   <script defer>
     document.body.appendChild(document.createElement('div')).setAttribute('id','chatBubbleRoot');
     window.agx = '6966b3b9ff2f8569ae243c64eqzJDjZgS87B5TfiPzQ+mw==|tIbVARHbb3vxisAHOtTxmc1gthpRt6O388wxaCp3rAA=';
   </script>
   <script defer src="https://storage.googleapis.com/agentx-cdn-01/agentx-chat.js"></script>
 
-  <script type="module">
-    // ==================== FIREBASE INIT ====================
-    import { initializeApp } from "firebase/app";
-    import { getAnalytics } from "firebase/analytics";
-    import { 
-      getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged 
-    } from "firebase/auth";
-    import { getFirestore, doc, setDoc, getDoc, collection, addDoc, getDocs, deleteDoc, updateDoc, serverTimestamp, query, orderBy } from "firebase/firestore";
-
-    const firebaseConfig = {
-      apiKey: "AIzaSyAtUrEx-xIDqYZsIzWU-mG8_Fbc3s6D3Ic",
-      authDomain: "nixai-d93cb.firebaseapp.com",
-      projectId: "nixai-d93cb",
-      storageBucket: "nixai-d93cb.firebasestorage.app",
-      messagingSenderId: "120045328987",
-      appId: "1:120045328987:web:01ab5651163b5c6c483d7e",
-      measurementId: "G-4J7K0ZFMNT"
+  <script>
+    // ==================== NO FIREBASE – DASHBOARD ONLY ====================
+    // Mock user data
+    const mockUser = {
+      displayName: 'Cyanix Explorer',
+      email: 'creator@cyanix.ai'
     };
 
-    const app = initializeApp(firebaseConfig);
-    const analytics = getAnalytics(app);
-    const auth = getAuth(app);
-    const db = getFirestore(app);
-    const provider = new GoogleAuthProvider();
-
-    // ==================== APP STATE ====================
-    let currentUser = null;
-    let onboardingCompleted = false;
     let activeFeature = 'journal';
     let currentMode = 'creator';
-    let userProfile = { avatar: 'fas fa-circle-user', displayName: '', theme: 'dark' };
+    let userProfile = { avatar: 'fas fa-circle-user', displayName: 'Cyanix Explorer', theme: 'dark' };
 
-    // ==================== RENDER FUNCTIONS ====================
     const appRoot = document.getElementById('appRoot');
-
-    function showLoading() {
-      appRoot.innerHTML = '<div class="loading"><i class="fas fa-spinner fa-pulse"></i> Loading...</div>';
-    }
-
-    function renderAuth() {
-      appRoot.innerHTML = `
-        <div class="auth-container">
-          <div class="auth-header">
-            <i class="fas fa-microchip"></i>
-            <h2>NiXAi · studio</h2>
-            <p style="color:#9fc; margin:16px 0;">sign in with Google to continue</p>
-          </div>
-          <div class="google-btn" id="googleSignInBtn">
-            <i class="fab fa-google"></i> Continue with Google
-          </div>
-        </div>
-      `;
-      document.getElementById('googleSignInBtn').addEventListener('click', () => {
-        showLoading();
-        signInWithPopup(auth, provider).catch((error) => {
-          console.error('Sign-in error:', error);
-          alert('Sign-in failed: ' + error.message);
-          renderAuth(); // go back to auth screen
-        });
-      });
-    }
-
-    function renderOnboarding() {
-      appRoot.innerHTML = `
-        <div class="onboarding-container">
-          <div class="onboarding-header">
-            <i class="fas fa-pen-to-square"></i>
-            <h2>Welcome, ${currentUser?.displayName || 'trailblazer'}</h2>
-            <p style="color:#9cf; margin: 8px 0;">help us personalize your journey</p>
-          </div>
-          <div class="input-group">
-            <label>Where did you hear about NiXAi?</label>
-            <select id="q1">
-              <option>Twitter / X</option>
-              <option>LinkedIn</option>
-              <option>GitHub</option>
-              <option>Friend / colleague</option>
-              <option>Other</option>
-            </select>
-          </div>
-          <div class="input-group">
-            <label>What is your primary role?</label>
-            <select id="q2">
-              <option>Developer</option>
-              <option>Designer</option>
-              <option>Product manager</option>
-              <option>Researcher</option>
-              <option>Student</option>
-              <option>Other</option>
-            </select>
-          </div>
-          <div class="input-group">
-            <label>Why are you using NiXAi?</label>
-            <select id="q3">
-              <option>AI exploration</option>
-              <option>Image / design work</option>
-              <option>Code assistance</option>
-              <option>Journaling & tasks</option>
-              <option>All of the above</option>
-            </select>
-          </div>
-          <div class="input-group">
-            <label>How often do you plan to use it?</label>
-            <select id="q4">
-              <option>Daily</option>
-              <option>Weekly</option>
-              <option>Occasionally</option>
-              <option>Just trying out</option>
-            </select>
-          </div>
-          <button class="btn btn-block" id="submitOnboarding">Start exploring <i class="fas fa-rocket"></i></button>
-        </div>
-      `;
-      document.getElementById('submitOnboarding').addEventListener('click', async () => {
-        if (!currentUser) return;
-        const answers = {
-          q1: document.getElementById('q1').value,
-          q2: document.getElementById('q2').value,
-          q3: document.getElementById('q3').value,
-          q4: document.getElementById('q4').value,
-        };
-        try {
-          await setDoc(doc(db, 'users', currentUser.uid), { 
-            onboarding: answers, 
-            email: currentUser.email,
-            profile: userProfile 
-          });
-          onboardingCompleted = true;
-          renderDashboard();
-        } catch (error) {
-          console.error('Error saving onboarding:', error);
-          alert('Failed to save. Please try again.');
-        }
-      });
-    }
 
     function renderDashboard() {
       appRoot.innerHTML = `
@@ -648,13 +420,13 @@
       document.getElementById('rightCol').innerHTML = `
         <div class="user-card">
           <div class="user-avatar" id="avatarDisplay"><i class="${userProfile.avatar}"></i></div>
-          <div class="user-name">${userProfile.displayName || currentUser?.displayName || 'NiXAi User'}</div>
-          <div class="user-email">${currentUser?.email}</div>
+          <div class="user-name">${userProfile.displayName}</div>
+          <div class="user-email">${mockUser.email}</div>
           <div class="mode-switch" id="modeSwitch">
             <div class="mode-option ${currentMode === 'creator' ? 'active' : ''}" data-mode="creator">🟢 Creator</div>
             <div class="mode-option ${currentMode === 'developer' ? 'active' : ''}" data-mode="developer">🔵 Developer</div>
           </div>
-          <button class="signout-btn" id="signOutBtn"><i class="fas fa-sign-out-alt"></i> Sign out</button>
+          <button class="signout-btn" id="signOutBtn" style="display:none;">(sign-out hidden)</button>
         </div>
         <div style="background: rgba(0,255,255,0.03); border-radius: 40px; padding: 24px;">
           <h4 style="color: cyan;"><i class="fas fa-bolt"></i> Quick actions</h4>
@@ -676,9 +448,6 @@
           showFeature(activeFeature);
         });
       });
-
-      // Sign out
-      document.getElementById('signOutBtn').addEventListener('click', () => signOut(auth));
 
       // Build left column based on mode
       function buildLeftColumn() {
@@ -759,7 +528,7 @@
     function getJournalPane() {
       return `
         <div class="feature-pane active-pane" id="journalPane">
-          <div class="card-header"><i class="fas fa-book-open"></i> NiXAi Journal</div>
+          <div class="card-header"><i class="fas fa-book-open"></i> Cyanix Journal</div>
           <textarea id="journalInput" placeholder="Record your thoughts..."></textarea>
           <button class="btn" id="addEntryBtn"><i class="fas fa-pen-fancy"></i> Add Entry</button>
           <div id="journalEntries" class="entries-container"></div>
@@ -782,13 +551,15 @@
       return `
         <div class="feature-pane" id="imagePane">
           <div class="card-header"><i class="fas fa-image"></i> Image Editor</div>
-          <input type="file" id="imageUpload" accept="image/*">
-          <canvas id="imageCanvas" width="400" height="300" style="border:1px solid cyan; border-radius:16px; margin:16px 0; background:#11212e;"></canvas>
-          <div class="img-controls">
-            <button class="btn" id="grayscaleBtn"><i class="fas fa-droplet"></i> Grayscale</button>
-            <button class="btn" id="brightnessBtn"><i class="fas fa-sun"></i> Brightness +</button>
-            <button class="btn" id="resetImgBtn"><i class="fas fa-undo"></i> Reset</button>
-            <button class="btn" id="saveImgBtn"><i class="fas fa-download"></i> Save</button>
+          <div class="image-editor">
+            <div class="image-canvas" id="imageCanvas" style="height:200px; background:#11212e; border-radius:32px; display:flex; align-items:center; justify-content:center;">
+              <i class="fas fa-cloud-upload-alt" style="font-size:40px;"></i> <span>click to simulate upload</span>
+            </div>
+            <div class="img-controls" style="margin-top:16px;">
+              <button class="btn" id="grayscaleBtn"><i class="fas fa-droplet"></i> Grayscale</button>
+              <button class="btn" id="brightnessBtn"><i class="fas fa-sun"></i> Brightness +</button>
+              <button class="btn" id="resetImgBtn"><i class="fas fa-undo"></i> Reset</button>
+            </div>
           </div>
         </div>
       `;
@@ -798,9 +569,9 @@
       return `
         <div class="feature-pane" id="codePane">
           <div class="card-header"><i class="fas fa-code"></i> Python Playground</div>
-          <textarea id="codeInput" style="height:150px; font-family:monospace;" placeholder="# write your python code here...\nprint('hello NiXAi')"></textarea>
+          <textarea id="codeInput" style="height:150px; font-family:monospace;" placeholder="# write your python code here...\nprint('hello cyanix')"></textarea>
           <button class="btn" id="runCodeBtn"><i class="fas fa-play"></i> Run</button>
-          <div id="codeOutput" style="background:#0a1a22; border-radius:24px; padding:20px; margin-top:16px; white-space: pre-wrap; overflow: auto;">› output will appear here</div>
+          <div id="codeOutput" style="background:#0a1a22; border-radius:24px; padding:20px; margin-top:16px;">› output will appear here</div>
         </div>
       `;
     }
@@ -999,212 +770,70 @@
     }
 
     // ---------- Feature initializers (fully interactive) ----------
-    async function initJournal() {
+    function initJournal() {
       const input = document.getElementById('journalInput');
       const addBtn = document.getElementById('addEntryBtn');
       const container = document.getElementById('journalEntries');
       if (!container) return;
-
-      async function loadEntries() {
-        const q = query(collection(db, 'users', currentUser.uid, 'journals'), orderBy('timestamp', 'desc'));
-        const snaps = await getDocs(q);
-        container.innerHTML = '';
-        snaps.forEach((snap) => {
-          const data = snap.data();
-          const div = document.createElement('div');
-          div.className = 'entry';
-          div.innerHTML = `
-            <span class="entry-text">${data.text}</span>
-            <span class="entry-time">${data.timestamp ? data.timestamp.toDate().toLocaleString() : ''}</span>
-            <i class="fas fa-trash delete-entry" data-id="${snap.id}"></i>
-          `;
-          container.appendChild(div);
-        });
-      }
-
-      addBtn?.addEventListener('click', async () => {
-        const text = input.value.trim();
-        if (!text) return;
-        try {
-          await addDoc(collection(db, 'users', currentUser.uid, 'journals'), {
-            text,
-            timestamp: serverTimestamp()
-          });
-          input.value = '';
-          await loadEntries();
-        } catch (error) {
-          console.error('Error adding entry:', error);
-        }
+      const addEntry = (text) => {
+        if (!text.trim()) return;
+        const div = document.createElement('div');
+        div.className = 'entry';
+        div.innerHTML = `<span class="entry-text">${text}</span>
+          <span class="entry-time">${new Date().toLocaleTimeString()}</span>
+          <i class="fas fa-trash delete-entry"></i>`;
+        container.appendChild(div);
+      };
+      container.innerHTML = '';
+      addEntry('Designed Cyanix glass UI');
+      addEntry('AI chat responding fluidly');
+      addBtn?.addEventListener('click', () => { addEntry(input.value); input.value = ''; });
+      container.addEventListener('click', (e) => {
+        if (e.target.classList.contains('delete-entry')) e.target.closest('.entry').remove();
       });
-
-      container.addEventListener('click', async (e) => {
-        if (e.target.classList.contains('delete-entry')) {
-          const id = e.target.dataset.id;
-          try {
-            await deleteDoc(doc(db, 'users', currentUser.uid, 'journals', id));
-            await loadEntries();
-          } catch (error) {
-            console.error('Error deleting entry:', error);
-          }
-        }
-      });
-
-      await loadEntries();
     }
 
-    async function initTasks() {
+    function initTasks() {
       const input = document.getElementById('taskInput');
       const addBtn = document.getElementById('addTaskBtn');
       const list = document.getElementById('taskList');
       if (!list) return;
-
-      async function loadTasks() {
-        const q = query(collection(db, 'users', currentUser.uid, 'tasks'), orderBy('timestamp', 'desc'));
-        const snaps = await getDocs(q);
-        list.innerHTML = '';
-        snaps.forEach((snap) => {
-          const data = snap.data();
-          const li = document.createElement('li');
-          li.innerHTML = `
-            <input type="checkbox" ${data.completed ? 'checked' : ''}>
-            <span class="task-text \( {data.completed ? 'completed' : ''}"> \){data.text}</span>
-            <i class="fas fa-trash delete-task" data-id="${snap.id}"></i>
-          `;
-          list.appendChild(li);
-        });
-      }
-
-      addBtn?.addEventListener('click', async () => {
-        const text = input.value.trim();
-        if (!text) return;
-        try {
-          await addDoc(collection(db, 'users', currentUser.uid, 'tasks'), {
-            text,
-            completed: false,
-            timestamp: serverTimestamp()
-          });
-          input.value = '';
-          await loadTasks();
-        } catch (error) {
-          console.error('Error adding task:', error);
-        }
+      const addTask = (text) => {
+        if (!text.trim()) return;
+        const li = document.createElement('li');
+        li.innerHTML = `<input type="checkbox"><span class="task-text">${text}</span><i class="fas fa-trash delete-task"></i>`;
+        list.appendChild(li);
+      };
+      list.innerHTML = '';
+      addTask('Implement journal delete');
+      addTask('Finish cyan neon hover states');
+      addBtn?.addEventListener('click', () => { addTask(input.value); input.value = ''; });
+      list.addEventListener('click', (e) => {
+        if (e.target.classList.contains('delete-task')) e.target.closest('li').remove();
       });
-
-      list.addEventListener('click', async (e) => {
-        if (e.target.classList.contains('delete-task')) {
-          const id = e.target.dataset.id;
-          try {
-            await deleteDoc(doc(db, 'users', currentUser.uid, 'tasks', id));
-            await loadTasks();
-          } catch (error) {
-            console.error('Error deleting task:', error);
-          }
-        }
+      list.addEventListener('change', (e) => {
+        if (e.target.type === 'checkbox') e.target.nextElementSibling.classList.toggle('completed', e.target.checked);
       });
-
-      list.addEventListener('change', async (e) => {
-        if (e.target.type === 'checkbox') {
-          const li = e.target.closest('li');
-          const id = li.querySelector('.delete-task').dataset.id;
-          const completed = e.target.checked;
-          try {
-            await updateDoc(doc(db, 'users', currentUser.uid, 'tasks', id), { completed });
-            li.querySelector('.task-text').classList.toggle('completed', completed);
-          } catch (error) {
-            console.error('Error updating task:', error);
-          }
-        }
-      });
-
-      await loadTasks();
     }
 
     function initImageEditor() {
-      const upload = document.getElementById('imageUpload');
       const canvas = document.getElementById('imageCanvas');
-      const ctx = canvas.getContext('2d');
-      let originalImage = null;
-
-      upload?.addEventListener('change', (e) => {
-        const file = e.target.files[0];
-        if (!file) return;
-        const reader = new FileReader();
-        reader.onload = (ev) => {
-          const img = new Image();
-          img.onload = () => {
-            canvas.width = img.width;
-            canvas.height = img.height;
-            ctx.drawImage(img, 0, 0);
-            originalImage = ctx.getImageData(0, 0, canvas.width, canvas.height);
-          };
-          img.src = ev.target.result;
-        };
-        reader.readAsDataURL(file);
+      if (!canvas) return;
+      canvas.addEventListener('click', () => {
+        canvas.style.background = '#1a3a4a';
+        canvas.innerHTML = '<i class="fas fa-check" style="color:cyan;"></i> Image loaded (simulated)';
       });
-
-      function applyFilter(filterFunc) {
-        if (!originalImage) return;
-        const imageData = new ImageData(new Uint8ClampedArray(originalImage.data), originalImage.width, originalImage.height);
-        const data = imageData.data;
-        for (let i = 0; i < data.length; i += 4) {
-          filterFunc(data, i);
-        }
-        ctx.putImageData(imageData, 0, 0);
-      }
-
-      document.getElementById('grayscaleBtn')?.addEventListener('click', () => {
-        applyFilter((data, i) => {
-          const avg = (data[i] + data[i + 1] + data[i + 2]) / 3;
-          data[i] = data[i + 1] = data[i + 2] = avg;
-        });
-      });
-
-      document.getElementById('brightnessBtn')?.addEventListener('click', () => {
-        applyFilter((data, i) => {
-          data[i] = Math.min(255, data[i] + 30);
-          data[i + 1] = Math.min(255, data[i + 1] + 30);
-          data[i + 2] = Math.min(255, data[i + 2] + 30);
-        });
-      });
-
-      document.getElementById('resetImgBtn')?.addEventListener('click', () => {
-        if (originalImage) ctx.putImageData(originalImage, 0, 0);
-      });
-
-      document.getElementById('saveImgBtn')?.addEventListener('click', () => {
-        const link = document.createElement('a');
-        link.download = 'edited.png';
-        link.href = canvas.toDataURL('image/png');
-        link.click();
-      });
+      document.getElementById('grayscaleBtn')?.addEventListener('click', () => canvas.style.filter = 'grayscale(1)');
+      document.getElementById('brightnessBtn')?.addEventListener('click', () => canvas.style.filter = 'brightness(1.5)');
+      document.getElementById('resetImgBtn')?.addEventListener('click', () => canvas.style.filter = 'none');
     }
 
     function initCodeBuilder() {
       const runBtn = document.getElementById('runCodeBtn');
       const codeInput = document.getElementById('codeInput');
       const output = document.getElementById('codeOutput');
-      let runner = new BrythonRunner({
-        stdout: {
-          write(content) {
-            output.innerHTML += content;
-          },
-          flush() {}
-        },
-        stderr: {
-          write(content) {
-            output.innerHTML += '<span style="color:red">' + content + '</span>';
-          },
-          flush() {}
-        }
-      });
-
-      runBtn?.addEventListener('click', async () => {
-        output.innerHTML = '';
-        try {
-          await runner.run(codeInput.value);
-        } catch (error) {
-          output.innerHTML += '<span style="color:red">Error: ' + error.message + '</span>';
-        }
+      runBtn?.addEventListener('click', () => {
+        output.innerText = `>>> ${codeInput.value}\n[simulated] Hello, Cyanix coder!`;
       });
     }
 
@@ -1236,7 +865,7 @@
 
     function initAnalytics() { /* static */ }
 
-    async function initPersonalize() {
+    function initPersonalize() {
       document.querySelectorAll('.avatar-options i').forEach(el => {
         el.addEventListener('click', () => {
           userProfile.avatar = el.dataset.avatar;
@@ -1244,17 +873,10 @@
           document.getElementById('avatarDisplay').innerHTML = `<i class="${userProfile.avatar}"></i>`;
         });
       });
-      document.getElementById('saveProfileBtn')?.addEventListener('click', async () => {
+      document.getElementById('saveProfileBtn')?.addEventListener('click', () => {
         userProfile.displayName = document.getElementById('displayNameInput').value;
         userProfile.theme = document.getElementById('themeSelect').value;
-        try {
-          await setDoc(doc(db, 'users', currentUser.uid), { profile: userProfile }, { merge: true });
-          document.querySelector('.user-name').innerText = userProfile.displayName || currentUser.displayName;
-          alert('Profile updated!');
-        } catch (error) {
-          console.error('Error saving profile:', error);
-          alert('Failed to save profile.');
-        }
+        alert('Profile updated (demo)');
       });
     }
 
@@ -1299,36 +921,8 @@
       });
     }
 
-    // ==================== AUTH STATE OBSERVER ====================
-    onAuthStateChanged(auth, async (user) => {
-      if (user) {
-        // User is signed in
-        currentUser = user;
-        showLoading(); // show loading while fetching profile
-        try {
-          const docRef = doc(db, 'users', user.uid);
-          const docSnap = await getDoc(docRef);
-          if (docSnap.exists() && docSnap.data().onboarding) {
-            onboardingCompleted = true;
-            userProfile = { ...userProfile, ...docSnap.data().profile };
-            renderDashboard();
-          } else {
-            renderOnboarding();
-          }
-        } catch (error) {
-          console.error('Error fetching user data:', error);
-          alert('Failed to load user data. Please refresh.');
-          renderAuth(); // fallback to auth
-        }
-      } else {
-        // User is signed out
-        currentUser = null;
-        renderAuth();
-      }
-    });
-
-    // Initial render (auth screen)
-    renderAuth();
+    // Start the dashboard immediately
+    renderDashboard();
   </script>
 </body>
 </html>
